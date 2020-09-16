@@ -1,5 +1,6 @@
 //API KEY
-const API_KEY = '415095d6d53abdc56ed23ecd58706b71';
+const API_KEY = 'a4d6ef5f73e193501bb217d15ab890d7';
+let UNITS = 'metric';
 //event listeners
 window.onload = function () {
   document.querySelector('#vacation-form').addEventListener('submit', (e) => {
@@ -9,15 +10,8 @@ window.onload = function () {
     const city = document.getElementById('city').value;
 
     if (city === '') {
-      document.getElementById('result').innerHTML = showDialog(
-        'warning',
-        'enter in a city'
-      );
+      showDialog('warning', 'Enter in a City');
     } else {
-      document.getElementById('result').innerHTML = showDialog(
-        'success',
-        'nice job'
-      );
       getWeatherData(city);
     }
     console.log('hello:', city);
@@ -40,10 +34,33 @@ changeWebsiteTheme = () => {
  * get weather data
  */
 getWeatherData = (city) => {
-  const URL = `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=7&appid=${API_KEY}`;
-  return fetch(URL).then((res) => {
-    console.log(res.json);
-  });
+  const URL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=${UNITS}`;
+  return fetch(URL)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.cod === '404') {
+        showDialog('warning', 'Enter a Valid City');
+      } else if (data.cod === '200') {
+        showDialog('success', `Added '${city.toUpperCase()}' to the table`);
+        createWeatherTable(data);
+      }
+    })
+    .catch((error) => console.log(error));
+};
+
+/**
+ * create table with weather data
+ *
+ */
+createWeatherTable = (data) => {
+  let weatherTableContent = '';
+  weatherTableContent += `<tr>
+  <td>${data.city.name}</td>
+  <td>78</td></tr>`;
+  document.getElementById('weather-table').innerHTML += weatherTableContent;
+
+  console.log('hello');
 };
 
 /**
@@ -61,5 +78,5 @@ showDialog = (dialogType, text) => {
   }
   dialog += text;
   dialog += '</div>';
-  return dialog;
+  document.getElementById('result').innerHTML = dialog;
 };

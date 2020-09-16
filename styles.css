@@ -55,12 +55,18 @@
   height: 36px;
   margin-top: 20px;
   border: none;
+
+  cursor: pointer;
 }
 .button--primary {
   background-color: #6bbd28;
   color: white;
   font-size: 16px;
   font-weight: bold;
+}
+
+.button--primary:hover {
+  background-color: #579722;
 }
 .result {
   margin-top: 20px;
