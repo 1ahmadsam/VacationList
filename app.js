@@ -65,13 +65,23 @@ createWeatherTable = (data) => {
   const myChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: temps,
+      labels: dates,
       datasets: [
         {
-          label: '# of Votes',
-          data: dates,
+          label: 'average temperature',
+          data: temps,
+          fill: false,
+          borderColor: '#FEB100',
         },
       ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: `Weather for next 5 Days ${
+          UNITS === 'metric' ? '(degrees)' : '(fahrenheit)'
+        }`,
+      },
     },
   });
 
@@ -103,9 +113,13 @@ transformWeatherData = (data) => {
   const weather_daily = data.list;
   let daily_temps = [];
   let daily_date = [];
+  let x = 0;
   for (weather of weather_daily) {
-    daily_temps.push(weather.main.temp);
-    daily_date.push(weather.dt_txt);
+    if (x % 4 === 0) {
+      daily_temps.push(weather.main.temp);
+      daily_date.push(weather.dt_txt);
+    }
+    x += 1;
   }
   return { dates: daily_date, temps: daily_temps };
 };
