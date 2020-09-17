@@ -57,8 +57,23 @@ createWeatherTable = (data) => {
   let weatherTableContent = '';
   weatherTableContent += `<tr>
   <td>${data.city.name}</td>
-  <td>78</td></tr>`;
+  <td><canvas id="myChart" width="400" height="400"></canvas></td></tr>`;
   document.getElementById('weather-table').innerHTML += weatherTableContent;
+  const { dates, temps } = transformWeatherData(data);
+  console.log(dates, temps);
+  const ctx = document.getElementById('myChart');
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: temps,
+      datasets: [
+        {
+          label: '# of Votes',
+          data: dates,
+        },
+      ],
+    },
+  });
 
   console.log('hello');
 };
@@ -79,4 +94,18 @@ showDialog = (dialogType, text) => {
   dialog += text;
   dialog += '</div>';
   document.getElementById('result').innerHTML = dialog;
+};
+
+/**
+ * transforms the api data into
+ */
+transformWeatherData = (data) => {
+  const weather_daily = data.list;
+  let daily_temps = [];
+  let daily_date = [];
+  for (weather of weather_daily) {
+    daily_temps.push(weather.main.temp);
+    daily_date.push(weather.dt_txt);
+  }
+  return { dates: daily_date, temps: daily_temps };
 };
