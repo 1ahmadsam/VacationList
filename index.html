@@ -7,13 +7,14 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vacation-List Comparison</title>
   </head>
   <body>
-    <div class="container">
+    <div class="main">
       <div class="header header--light">
         <h1 class="header__title">
           <i class="fas fa-plane"></i>
@@ -24,31 +25,33 @@
           <span class="slider round"></span>
         </label>
       </div>
-      <form id="vacation-form">
-        <!-- <div class="form">
+      <div class="container">
+        <form id="vacation-form">
+          <!-- <div class="form">
           <label for="country" class="form__label">Country</label
           ><input type="text" id="country" class="form__input" />
         </div> -->
-        <div class="form">
-          <label for="city" class="form__label">City</label
-          ><input type="text" id="city" class="form__input" />
-        </div>
-        <input
-          type="submit"
-          value="Add Vacation Spot"
-          class="button button--primary"
-        />
-      </form>
-      <div id="result"></div>
-      <table class="weather-list" id="weather-table">
-        <tr>
-          <th>City</th>
-          <th>Weather</th>
-        </tr>
-        <!-- <tr>
+          <div class="form">
+            <label for="city" class="form__label">City</label
+            ><input type="text" id="city" class="form__input" />
+          </div>
+          <input
+            type="submit"
+            value="Add Vacation Spot"
+            class="button button--primary"
+          />
+        </form>
+        <div id="result"></div>
+        <table class="weather-list" id="weather-table">
+          <tr>
+            <th>City</th>
+            <th>Weather</th>
+          </tr>
+          <!-- <tr>
           <td>oakville</td>
           <td>78</td> !-->
-      </table>
+        </table>
+      </div>
     </div>
   </body>
 </html>

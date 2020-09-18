@@ -57,11 +57,13 @@ createWeatherTable = (data) => {
   let weatherTableContent = '';
   weatherTableContent += `<tr>
   <td>${data.city.name}</td>
-  <td><canvas id="myChart" width="400" height="400"></canvas></td></tr>`;
-  document.getElementById('weather-table').innerHTML += weatherTableContent;
-  const { dates, temps } = transformWeatherData(data);
+  <td><canvas id="${data.city.name}-chart" width="400" height="300"></canvas></td></tr>`;
+  document
+    .getElementById('weather-table')
+    .insertAdjacentHTML('beforeend', weatherTableContent);
+  const { dates, temps, feels_temps } = transformWeatherData(data);
   console.log(dates, temps);
-  const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById(`${data.city.name}-chart`);
   const myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -72,6 +74,12 @@ createWeatherTable = (data) => {
           data: temps,
           fill: false,
           borderColor: '#FEB100',
+        },
+        {
+          label: 'feels like',
+          data: feels_temps,
+          fill: false,
+          borderColor: '#5cadfa',
         },
       ],
     },
@@ -105,6 +113,12 @@ showDialog = (dialogType, text) => {
   dialog += '</div>';
   document.getElementById('result').innerHTML = dialog;
 };
+/**
+ * transform dates into human readable
+ */
+transformDates = (dates) => {
+  return dates.map((date) => dayjs(date).format('MMM-DD hh:mmA'));
+};
 
 /**
  * transforms the api data into
@@ -112,14 +126,20 @@ showDialog = (dialogType, text) => {
 transformWeatherData = (data) => {
   const weather_daily = data.list;
   let daily_temps = [];
+  let feels_temps = [];
   let daily_date = [];
   let x = 0;
   for (weather of weather_daily) {
     if (x % 4 === 0) {
+      feels_temps.push(weather.main.feels_like);
       daily_temps.push(weather.main.temp);
       daily_date.push(weather.dt_txt);
     }
     x += 1;
   }
-  return { dates: daily_date, temps: daily_temps };
+  return {
+    dates: transformDates(daily_date),
+    temps: daily_temps,
+    feels_temps: feels_temps,
+  };
 };
