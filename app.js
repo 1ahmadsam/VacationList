@@ -12,6 +12,11 @@ window.onload = function () {
     if (city === '') {
       showDialog('warning', 'Enter in a City');
     } else {
+      document.getElementById(
+        'weather-metric'
+      ).innerText = `Weather for 5 days (${
+        UNITS === 'metric' ? 'degrees' : 'fahrenheit'
+      })`;
       getWeatherData(city);
     }
     console.log('hello:', city);
@@ -56,7 +61,6 @@ getWeatherData = (city) => {
 createWeatherTable = (data) => {
   let weatherTableContent = '';
   weatherTableContent += `<tr>
-  <td>${data.city.name}</td>
   <td><canvas id="${data.city.name}-chart" width="400" height="300"></canvas></td></tr>`;
   document
     .getElementById('weather-table')
@@ -86,9 +90,7 @@ createWeatherTable = (data) => {
     options: {
       title: {
         display: true,
-        text: `Weather for next 5 Days ${
-          UNITS === 'metric' ? '(degrees)' : '(fahrenheit)'
-        }`,
+        text: `${data.city.name}`,
       },
     },
   });
@@ -117,7 +119,7 @@ showDialog = (dialogType, text) => {
  * transform dates into human readable
  */
 transformDates = (dates) => {
-  return dates.map((date) => dayjs(date).format('MMM-DD hh:mmA'));
+  return dates.map((date) => dayjs(date).format('MMM-DD hhA'));
 };
 
 /**
