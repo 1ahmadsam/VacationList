@@ -2,19 +2,21 @@
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
 }
-body,
-html {
+
+html,
+body {
   height: 100%;
 }
 .main {
   background-color: #fefae7;
   background-image: url('./static/images/bg-home.jpg');
   background-position: center;
+  -webkit-background-size: cover !important;
   background-size: cover;
-  height: 100%;
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 .header {
   display: flex;
@@ -51,6 +53,7 @@ html {
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 12px;
+  margin-bottom: 40px;
 }
 .container h2 {
   text-align: center;
