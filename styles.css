@@ -136,7 +136,7 @@ html {
 /* The switch - the box around the slider */
 .switch {
   position: relative;
-  display: inline-block;
+  display: flex;
   width: 60px;
   height: 34px;
   margin-left: 2rem;
@@ -195,6 +195,17 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.weather-unit {
+  margin-left: 30px;
+  background-color: #6bbd28;
+  font-size: 20px;
+  color: white;
+  padding-left: 40px;
+  padding-top: 5px;
+  padding-right: 12px;
+  border-radius: 34px;
 }
 
 td,

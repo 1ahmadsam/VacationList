@@ -1,6 +1,11 @@
 //API KEY
 const API_KEY = 'a4d6ef5f73e193501bb217d15ab890d7';
 let UNITS = 'metric';
+let currentUnits = UNITS === 'metric' ? 'degrees' : 'fahrenheit';
+
+//chart
+
+let myChart;
 //event listeners
 window.onload = function () {
   document.querySelector('#vacation-form').addEventListener('submit', (e) => {
@@ -14,9 +19,7 @@ window.onload = function () {
     } else {
       document.getElementById(
         'weather-metric'
-      ).innerText = `Weather for 5 days (${
-        UNITS === 'metric' ? 'degrees' : 'fahrenheit'
-      })`;
+      ).innerText = `Weather for 5 days (${currentUnits})`;
       getWeatherData(city);
     }
     console.log('hello:', city);
@@ -48,10 +51,19 @@ getWeatherData = (city) => {
         showDialog('warning', 'Enter a Valid City');
       } else if (data.cod === '200') {
         showDialog('success', `Added '${city.toUpperCase()}' to the table`);
-        createWeatherTable(data);
+        //if weather table exists, update it instead
+        myChart ? updateWeatherTable(data) : createWeatherTable(data);
       }
     })
     .catch((error) => console.log(error));
+};
+
+const dynamicColors = () => {
+  //need to make unique
+  var r = Math.floor(Math.random() * 255);
+  var g = Math.floor(Math.random() * 255);
+  var b = Math.floor(Math.random() * 255);
+  return 'rgb(' + r + ',' + g + ',' + b + ')';
 };
 
 /**
@@ -66,38 +78,48 @@ createWeatherTable = (data) => {
     .getElementById('weather-table')
     .insertAdjacentHTML('beforeend', weatherTableContent);
   const { dates, temps, feels_temps } = transformWeatherData(data);
-  console.log(dates, temps);
+
   const ctx = document.getElementById(`${data.city.name}-chart`);
-  const myChart = new Chart(ctx, {
+  console.log(dates, temps);
+  myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: dates,
       datasets: [
         {
-          label: 'average temperature',
+          label: `${data.city.name}`,
           data: temps,
           fill: false,
           borderColor: '#FEB100',
         },
-        {
-          label: 'feels like',
-          data: feels_temps,
-          fill: false,
-          borderColor: '#5cadfa',
-        },
+        // {
+        //   label: 'feels like',
+        //   data: feels_temps,
+        //   fill: false,
+        //   borderColor: '#5cadfa',
+        // },
       ],
     },
     options: {
       title: {
         display: true,
-        text: `${data.city.name}`,
+        text: `Average Temperature`,
       },
     },
   });
-
-  console.log('hello');
 };
 
+const updateWeatherTable = (data) => {
+  const { dates, temps, feels_temps } = transformWeatherData(data);
+  myChart.data.datasets.push({
+    label: `${data.city.name}`,
+    data: temps,
+    fill: false,
+    borderColor: dynamicColors(),
+  });
+  myChart.update();
+};
+console.log('rand color', dynamicColors());
 /**
  *  display success or error message depending on inpout values
  */
@@ -145,3 +167,8 @@ transformWeatherData = (data) => {
     feels_temps: feels_temps,
   };
 };
+
+const currentConversion = () => {
+  document.querySelector('.weather-unit').innerText = currentUnits;
+};
+currentConversion();
