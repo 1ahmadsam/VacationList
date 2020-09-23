@@ -32,7 +32,6 @@ window.onload = function () {
       }
       getWeatherData(city);
     }
-    console.log('hello:', city);
   });
 };
 
@@ -47,7 +46,6 @@ const changeWebsiteUnits = () => {
     UNITS = 'metric';
   }
   //work on clearing logic
-  console.log(currentUnits());
   document.getElementById('weather-table').innerHTML = '';
   let temp_cities = [...ALL_CITIES];
 
@@ -57,8 +55,6 @@ const changeWebsiteUnits = () => {
     getWeatherData(city);
   });
   ALL_CITIES = [];
-
-  console.log('yo', ALL_CITIES);
 
   const weather_unit = document.querySelector('.weather-unit');
   weather_unit.innerText = currentUnits();
@@ -72,7 +68,6 @@ getWeatherData = (city) => {
   return fetch(URL)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.cod === '404') {
         showDialog('warning', 'Enter a Valid City');
       } else if (data.cod === '200') {
@@ -127,7 +122,6 @@ createWeatherTable = (data) => {
   const weatherListOccurence = countWeatherType(weather);
 
   const ctx = document.getElementById(`${data.city.name}-chart`);
-  console.log(weather);
   myChart = new Chart(ctx, {
     type: 'line',
     data: {
