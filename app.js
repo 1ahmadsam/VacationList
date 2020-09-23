@@ -1,7 +1,8 @@
 //API KEY
 const API_KEY = 'a4d6ef5f73e193501bb217d15ab890d7';
 let UNITS = 'metric';
-let currentUnits = UNITS === 'metric' ? '°C' : '°F';
+let ALL_CITIES = [];
+let currentUnits = () => (UNITS === 'metric' ? '°C' : '°F');
 const weatherCodes = [
   'Clouds',
   'Clear',
@@ -25,9 +26,10 @@ window.onload = function () {
     if (city === '') {
       showDialog('warning', 'Enter in a City');
     } else {
-      document.getElementById(
-        'weather-metric'
-      ).innerText = `Weather for 5 days (${currentUnits})`;
+      if (ALL_CITIES.includes(city.toUpperCase())) {
+        showDialog('warning', 'Already entered that city');
+        return;
+      }
       getWeatherData(city);
     }
     console.log('hello:', city);
@@ -37,13 +39,29 @@ window.onload = function () {
 /**
  * change websites theme to dark
  */
-changeWebsiteTheme = () => {
+const changeWebsiteUnits = () => {
   const checkBox = document.getElementById('check');
   if (checkBox.checked == true) {
-    console.log('checked');
+    UNITS = 'imperial';
   } else {
-    console.log('not checked');
+    UNITS = 'metric';
   }
+  //work on clearing logic
+  console.log(currentUnits());
+  document.getElementById('weather-table').innerHTML = '';
+  let temp_cities = [...ALL_CITIES];
+
+  myChart = null;
+  radarChart = null;
+  temp_cities.forEach((city) => {
+    getWeatherData(city);
+  });
+  ALL_CITIES = [];
+
+  console.log('yo', ALL_CITIES);
+
+  const weather_unit = document.querySelector('.weather-unit');
+  weather_unit.innerText = currentUnits();
 };
 
 /**
@@ -58,20 +76,19 @@ getWeatherData = (city) => {
       if (data.cod === '404') {
         showDialog('warning', 'Enter a Valid City');
       } else if (data.cod === '200') {
-        showDialog('success', `Added '${city.toUpperCase()}' to the table`);
+        document.getElementById(
+          'weather-metric'
+        ).innerText = `Weather for next 5 days (${currentUnits()})`;
+        ALL_CITIES.push(data.city.name.toUpperCase());
+        showDialog(
+          'success',
+          `Added ${data.city.name}, ${data.city.country} to the table`
+        );
         //if weather table exists, update it instead
         myChart ? updateWeatherTable(data) : createWeatherTable(data);
       }
     })
     .catch((error) => console.log(error));
-};
-
-const dynamicColors = () => {
-  //need to make unique
-  var r = Math.floor(Math.random() * 255);
-  var g = Math.floor(Math.random() * 255);
-  var b = Math.floor(Math.random() * 255);
-  return 'rgb(' + r + ',' + g + ',' + b + ')';
 };
 
 /**
@@ -159,26 +176,29 @@ const updateWeatherTable = (data) => {
 
   //weather type
   const weatherListOccurence = countWeatherType(weather);
-  const newColor = dynamicColors();
+  const randomBetween = (min, max) =>
+    min + Math.floor(Math.random() * (max - min + 1));
+  const r = randomBetween(0, 255);
+  const g = randomBetween(0, 255);
+  const b = randomBetween(0, 255);
 
   myChart.data.datasets.push({
     label: `${data.city.name}`,
     data: temps,
     fill: false,
-    borderColor: newColor,
+    borderColor: `rgb(${r},${g},${b}, 1)`,
   });
   radarChart.data.datasets.push({
     label: `${data.city.name}`,
     data: weatherListOccurence,
     fill: true,
 
-    backgroundColor: 'rgba(255,99,132,0.2)',
-    borderColor: newColor,
+    backgroundColor: `rgb(${r},${g},${b}, 0.2)`,
+    borderColor: `rgb(${r},${g},${b}, 1)`,
   });
   myChart.update();
   radarChart.update();
 };
-console.log('rand color', dynamicColors());
 /**
  *  display success or error message depending on inpout values
  */
@@ -229,8 +249,3 @@ transformWeatherData = (data) => {
     weather: weather_list,
   };
 };
-
-const currentConversion = () => {
-  document.querySelector('.weather-unit').innerText = currentUnits;
-};
-currentConversion();

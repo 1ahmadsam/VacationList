@@ -8,7 +8,7 @@ body {
   height: 100%;
 }
 .main {
-  background-color: #fefae7;
+  background-color: #fff;
   background-image: url('./static/images/bg-home.jpg');
   background-position: center;
   -webkit-background-size: cover !important;
@@ -43,7 +43,7 @@ body {
 }
 .container {
   border-radius: 12px;
-  background-color: #fefae7;
+  background-color: #fff;
   width: 100%;
   display: block;
   box-sizing: border-box;
@@ -55,9 +55,9 @@ body {
   padding-bottom: 12px;
   margin-bottom: 40px;
 }
-.container h2 {
+.container > h2 {
   text-align: center;
-  padding-top: 16px;
+  padding: 16px;
 }
 
 .form {
@@ -73,18 +73,19 @@ body {
   vertical-align: top;
 }
 .form__input {
-  height: 32px;
-  font-size: 18px;
+  height: 40px;
+  font-size: 22px;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
 }
 .form__label {
   padding-bottom: 8px;
+  font-size: 18px;
 }
 
 .button {
   width: 100%;
-  height: 36px;
+  height: 40px;
   margin-top: 20px;
   border: none;
 
@@ -94,7 +95,7 @@ body {
 .button--primary {
   background-color: #6bbd28;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 }
 
@@ -178,11 +179,11 @@ body {
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #f79f1b;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px #f79f1b;
 }
 
 input:checked + .slider:before {
