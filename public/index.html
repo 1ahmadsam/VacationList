@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://kit.fontawesome.com/ca3a7643b0.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vacation-List Comparison</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header header--light">
+        <h1 class="header__title">
+          <i class="fas fa-plane"></i>
+          <span class="header--first">Vacation</span>List
+        </h1>
+        <label class="switch">
+          <input type="checkbox" id="check" onclick="changeWebsiteUnits()" />
+          <span class="slider round"></span>
+          <div class="weather-unit">°C</div>
+        </label>
+      </div>
+      <div class="container">
+        <form id="vacation-form">
+          <!-- <div class="form">
+          <label for="country" class="form__label">Country</label
+          ><input type="text" id="country" class="form__input" />
+        </div> -->
+          <div class="form">
+            <label for="city" class="form__label">Enter a City</label
+            ><input type="text" id="city" class="form__input" />
+          </div>
+          <input
+            type="submit"
+            value="Add Vacation Spot"
+            class="button button--primary"
+          />
+        </form>
+        <div id="result"></div>
+        <h2 id="weather-metric"></h2>
+        <table class="weather-list" id="weather-table">
+          <!-- <tr>
+          <td>oakville</td>
+          <td>78</td> !-->
+        </table>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
